@@ -1,22 +1,94 @@
 [
   {
+    "name": "CloudflareR2ControlPlaneOptions",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/r2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/r2.ts",
+      "line": 23,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["R2Fetch"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "apiBaseUrl",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "fetch",
+        "kind": "property",
+        "type": "R2Fetch | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "createCloudflareR2ControlPlane",
+    "description": "Create the concrete Cloudflare REST adapter for R2 bucket lifecycle operations.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+    "sourceLocation": {
+      "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+      "line": 13,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["CloudflareR2ControlPlaneOptions", "R2BucketControlPlane"],
+    "signatures": [
+      {
+        "label": "(options?: CloudflareR2ControlPlaneOptions) => R2BucketControlPlane",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "CloudflareR2ControlPlaneOptions",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "R2BucketControlPlane",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "createInfraAdapter",
-    "description": "Create the canonical Cloudflare R2 object-storage adapter entrypoint.\n\nThe foundation exposes the released Contracts boundary and fails lifecycle calls explicitly\nuntil the provider implementation phase supplies its external adapters.",
+    "description": "Create the canonical Cloudflare R2 object-storage adapter entrypoint.\n\nThe default adapter uses Cloudflare's account API. Callers may inject another control-plane\nadapter for deterministic tests or another trusted execution environment.",
     "isReadme": true,
     "examples": [],
     "kind": "function",
     "modulePath": "src/features/object-storage/composition/createInfraAdapter.ts",
     "sourceLocation": {
       "filePath": "src/features/object-storage/composition/createInfraAdapter.ts",
-      "line": 13,
+      "line": 19,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": [],
+    "relatedSymbols": ["R2AdapterOptions"],
     "signatures": [
       {
-        "label": "() => InfraServiceAdapter",
-        "parameters": [],
+        "label": "(options?: R2AdapterOptions) => InfraServiceAdapter",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "R2AdapterOptions",
+            "required": false,
+            "description": null
+          }
+        ],
         "returnType": "InfraServiceAdapter",
         "returnDescription": null
       }
@@ -35,6 +107,156 @@
       "filePath": "src/constants/infra.ts",
       "line": 5,
       "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "R2AdapterOptions",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/r2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/r2.ts",
+      "line": 30,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["R2BucketControlPlane"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "cloud",
+        "kind": "property",
+        "type": "R2BucketControlPlane | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "R2BucketControlPlane",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/r2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/r2.ts",
+      "line": 13,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["R2BucketObservation", "R2CloudRequest"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "createBucketAsync",
+        "kind": "method",
+        "type": "(request: R2CloudRequest & { readonly bucket: string; }) => Promise<InfraResult<R2BucketObservation>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "deleteBucketAsync",
+        "kind": "method",
+        "type": "(request: R2CloudRequest & { readonly bucket: string; }) => Promise<InfraResult<null>>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "listBucketsAsync",
+        "kind": "method",
+        "type": "(request: R2CloudRequest) => Promise<InfraResult<readonly R2BucketObservation[]>>",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "R2BucketObservation",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/r2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/r2.ts",
+      "line": 3,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "name",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "R2CloudRequest",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/r2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/r2.ts",
+      "line": 7,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "accountId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "apiToken",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "signal",
+        "kind": "property",
+        "type": "AbortSignal | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "R2Fetch",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/types/r2.ts",
+    "sourceLocation": {
+      "filePath": "src/types/r2.ts",
+      "line": 28,
+      "column": 1
     },
     "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],

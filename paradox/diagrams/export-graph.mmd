@@ -1,10 +1,38 @@
 graph LR
   module_examples_basic_usage_index_ts["examples/basic-usage/index.ts"]
   module_src_constants_infra_ts["src/constants/infra.ts"]
+  module_src_features_object_storage_adapters_outbound_createCloudflareR2ControlPlane_ts["src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"]
+  module_src_features_object_storage_application_destroyR2Async_ts["src/features/object-storage/application/destroyR2Async.ts"]
+  module_src_features_object_storage_application_getR2StatusAsync_ts["src/features/object-storage/application/getR2StatusAsync.ts"]
+  module_src_features_object_storage_application_planR2Async_ts["src/features/object-storage/application/planR2Async.ts"]
+  module_src_features_object_storage_application_reconcileR2Async_ts["src/features/object-storage/application/reconcileR2Async.ts"]
+  module_src_features_object_storage_application_resolveR2DesiredStateAsync_ts["src/features/object-storage/application/resolveR2DesiredStateAsync.ts"]
   module_src_features_object_storage_composition_createInfraAdapter_ts["src/features/object-storage/composition/createInfraAdapter.ts"]
   module_src_index_ts["src/index.ts"]
   module_src_infraAdapter_test_ts["src/infraAdapter.test.ts"]
+  module_src_types_r2_ts["src/types/r2.ts"]
+  export_CloudflareR2ControlPlaneOptions["CloudflareR2ControlPlaneOptions"]
+  module_src_types_r2_ts --> export_CloudflareR2ControlPlaneOptions
+  export_CloudflareR2ControlPlaneOptions -.-> export_R2Fetch
+  export_createCloudflareR2ControlPlane["createCloudflareR2ControlPlane"]
+  module_src_features_object_storage_adapters_outbound_createCloudflareR2ControlPlane_ts --> export_createCloudflareR2ControlPlane
+  export_createCloudflareR2ControlPlane -.-> export_CloudflareR2ControlPlaneOptions
+  export_createCloudflareR2ControlPlane -.-> export_R2BucketControlPlane
   export_createInfraAdapter["createInfraAdapter"]
   module_src_features_object_storage_composition_createInfraAdapter_ts --> export_createInfraAdapter
+  export_createInfraAdapter -.-> export_R2AdapterOptions
   export_infraAdapterDescriptor["infraAdapterDescriptor"]
   module_src_constants_infra_ts --> export_infraAdapterDescriptor
+  export_R2AdapterOptions["R2AdapterOptions"]
+  module_src_types_r2_ts --> export_R2AdapterOptions
+  export_R2AdapterOptions -.-> export_R2BucketControlPlane
+  export_R2BucketControlPlane["R2BucketControlPlane"]
+  module_src_types_r2_ts --> export_R2BucketControlPlane
+  export_R2BucketControlPlane -.-> export_R2BucketObservation
+  export_R2BucketControlPlane -.-> export_R2CloudRequest
+  export_R2BucketObservation["R2BucketObservation"]
+  module_src_types_r2_ts --> export_R2BucketObservation
+  export_R2CloudRequest["R2CloudRequest"]
+  module_src_types_r2_ts --> export_R2CloudRequest
+  export_R2Fetch["R2Fetch"]
+  module_src_types_r2_ts --> export_R2Fetch

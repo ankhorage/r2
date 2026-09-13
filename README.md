@@ -3,7 +3,7 @@
 
 # @ankhorage/r2
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v0.0.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v0.1.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Cloudflare R2 object-storage adapter for provider-neutral Ankhorage infrastructure.
 
@@ -15,6 +15,7 @@ Cloudflare R2 object-storage adapter for provider-neutral Ankhorage infrastructu
 - [Architecture overview](././paradox/diagrams/architecture-overview.mmd)
 - [Module relationships](././paradox/diagrams/module-relationships.mmd)
 - [Export graph](././paradox/diagrams/export-graph.mmd)
+- [createInfraAdapter sequence](././paradox/diagrams/sequences/create-infra-adapter.mmd)
 
 ## Public API
 
@@ -24,15 +25,16 @@ Cloudflare R2 object-storage adapter for provider-neutral Ankhorage infrastructu
 <summary>createInfraAdapter</summary>
 
 ```ts
-createInfraAdapter() => InfraServiceAdapter
+createInfraAdapter(options?: R2AdapterOptions) => InfraServiceAdapter
 ```
 
 Create the canonical Cloudflare R2 object-storage adapter entrypoint.
 
-The foundation exposes the released Contracts boundary and fails lifecycle calls explicitly
-until the provider implementation phase supplies its external adapters.
+The default adapter uses Cloudflare's account API. Callers may inject another control-plane
+adapter for deterministic tests or another trusted execution environment.
 
 Module: `src/features/object-storage/composition/createInfraAdapter.ts`
-Source: `src/features/object-storage/composition/createInfraAdapter.ts:13:1`
+Source: `src/features/object-storage/composition/createInfraAdapter.ts:19:1`
+Related symbols: `R2AdapterOptions`
 
 </details>

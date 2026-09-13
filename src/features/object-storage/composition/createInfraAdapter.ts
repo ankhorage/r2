@@ -1,38 +1,33 @@
-import type { InfraResult, InfraServiceAdapter } from '@ankhorage/contracts/infra';
+import type { InfraServiceAdapter } from '@ankhorage/contracts/infra';
 
 import { infraAdapterDescriptor } from '../../../constants/infra';
+import type { R2AdapterOptions } from '../../../types/r2';
+import { createCloudflareR2ControlPlane } from '../adapters/outbound/createCloudflareR2ControlPlane';
+import { destroyR2Async } from '../application/destroyR2Async';
+import { getR2StatusAsync } from '../application/getR2StatusAsync';
+import { planR2Async } from '../application/planR2Async';
+import { reconcileR2Async } from '../application/reconcileR2Async';
 
 /***
  * Create the canonical Cloudflare R2 object-storage adapter entrypoint.
  *
- * The foundation exposes the released Contracts boundary and fails lifecycle calls explicitly
- * until the provider implementation phase supplies its external adapters.
+ * The default adapter uses Cloudflare's account API. Callers may inject another control-plane
+ * adapter for deterministic tests or another trusted execution environment.
  *
  * @readme
  */
-export function createInfraAdapter(): InfraServiceAdapter {
+export function createInfraAdapter(options: R2AdapterOptions = {}): InfraServiceAdapter {
+  const cloud = options.cloud ?? createCloudflareR2ControlPlane();
   return {
     descriptor: infraAdapterDescriptor,
-    validateAsync: () => notImplementedAsync(),
-    planAsync: () => notImplementedAsync(),
-    desiredWorkloadsAsync: () => notImplementedAsync(),
-    reconcileAsync: () => notImplementedAsync(),
-    statusAsync: () => notImplementedAsync(),
-    destroyAsync: () => notImplementedAsync(),
+    validateAsync: async (context) => {
+      const planned = await planR2Async(cloud, context);
+      return planned.ok ? { ok: true, value: null, diagnostics: [] } : planned;
+    },
+    planAsync: (context) => planR2Async(cloud, context),
+    desiredWorkloadsAsync: () => Promise.resolve({ ok: true, value: [], diagnostics: [] }),
+    reconcileAsync: (context) => reconcileR2Async(cloud, context),
+    statusAsync: (context) => getR2StatusAsync(cloud, context),
+    destroyAsync: (context, request) => destroyR2Async(cloud, context, request),
   };
-}
-
-/*** Reject lifecycle execution until this package's provider phase is implemented. */
-function notImplementedAsync<T>(): Promise<InfraResult<T>> {
-  return Promise.resolve({
-    ok: false,
-    diagnostics: [
-      {
-        severity: 'error',
-        code: 'r2_adapter_not_implemented',
-        message:
-          'The Cloudflare R2 object-storage adapter foundation is installed, but its lifecycle is not implemented yet.',
-      },
-    ],
-  });
 }
