@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_createCloudflareR2ControlPlane as createCloudflareR2ControlPlane
+  participant participant_createInfraAdapter as createInfraAdapter
+  participant_createInfraAdapter->>participant_createCloudflareR2ControlPlane: createCloudflareR2ControlPlane()
+  participant_createCloudflareR2ControlPlane-->>participant_createInfraAdapter: return

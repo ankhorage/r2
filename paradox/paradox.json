@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.0",
+      "value": "v0.1.0",
       "color": "cb3837"
     },
     {
@@ -81,43 +81,191 @@
       "exports": ["infraAdapterDescriptor"]
     },
     {
+      "path": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/types/r2.ts"],
+      "exports": ["createCloudflareR2ControlPlane"]
+    },
+    {
+      "path": "src/features/object-storage/application/destroyR2Async.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/types/r2.ts"],
+      "exports": ["destroyR2Async"]
+    },
+    {
+      "path": "src/features/object-storage/application/getR2StatusAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "src/types/r2.ts"
+      ],
+      "exports": ["getR2StatusAsync"]
+    },
+    {
+      "path": "src/features/object-storage/application/planR2Async.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "src/types/r2.ts"
+      ],
+      "exports": ["planR2Async"]
+    },
+    {
+      "path": "src/features/object-storage/application/reconcileR2Async.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "src/types/r2.ts"
+      ],
+      "exports": ["reconcileR2Async"]
+    },
+    {
+      "path": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/types/r2.ts"],
+      "exports": ["R2DesiredState", "resolveR2DesiredStateAsync"]
+    },
+    {
       "path": "src/features/object-storage/composition/createInfraAdapter.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/constants/infra.ts"],
+      "dependencies": [
+        "src/constants/infra.ts",
+        "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "src/features/object-storage/application/destroyR2Async.ts",
+        "src/features/object-storage/application/getR2StatusAsync.ts",
+        "src/features/object-storage/application/planR2Async.ts",
+        "src/features/object-storage/application/reconcileR2Async.ts",
+        "src/types/r2.ts"
+      ],
       "exports": ["createInfraAdapter"]
     },
     {
       "path": "src/index.ts",
       "isEntrypoint": true,
       "dependencies": [],
-      "exports": ["createInfraAdapter", "infraAdapterDescriptor"]
+      "exports": [
+        "CloudflareR2ControlPlaneOptions",
+        "createCloudflareR2ControlPlane",
+        "createInfraAdapter",
+        "infraAdapterDescriptor",
+        "R2AdapterOptions",
+        "R2BucketControlPlane",
+        "R2BucketObservation",
+        "R2CloudRequest",
+        "R2Fetch"
+      ]
     },
     {
       "path": "src/infraAdapter.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/index.ts"],
+      "dependencies": ["src/index.ts", "src/types/r2.ts"],
       "exports": []
+    },
+    {
+      "path": "src/types/r2.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "CloudflareR2ControlPlaneOptions",
+        "R2AdapterOptions",
+        "R2BucketControlPlane",
+        "R2BucketObservation",
+        "R2CloudRequest",
+        "R2Fetch"
+      ]
     }
   ],
   "exports": [
     {
+      "name": "CloudflareR2ControlPlaneOptions",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/r2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/r2.ts",
+        "line": 23,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["R2Fetch"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "apiBaseUrl",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "fetch",
+          "kind": "property",
+          "type": "R2Fetch | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "createCloudflareR2ControlPlane",
+      "description": "Create the concrete Cloudflare REST adapter for R2 bucket lifecycle operations.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 13,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["CloudflareR2ControlPlaneOptions", "R2BucketControlPlane"],
+      "signatures": [
+        {
+          "label": "(options?: CloudflareR2ControlPlaneOptions) => R2BucketControlPlane",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "CloudflareR2ControlPlaneOptions",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "R2BucketControlPlane",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "createInfraAdapter",
-      "description": "Create the canonical Cloudflare R2 object-storage adapter entrypoint.\n\nThe foundation exposes the released Contracts boundary and fails lifecycle calls explicitly\nuntil the provider implementation phase supplies its external adapters.",
+      "description": "Create the canonical Cloudflare R2 object-storage adapter entrypoint.\n\nThe default adapter uses Cloudflare's account API. Callers may inject another control-plane\nadapter for deterministic tests or another trusted execution environment.",
       "isReadme": true,
       "examples": [],
       "kind": "function",
       "modulePath": "src/features/object-storage/composition/createInfraAdapter.ts",
       "sourceLocation": {
         "filePath": "src/features/object-storage/composition/createInfraAdapter.ts",
-        "line": 13,
+        "line": 19,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [],
+      "relatedSymbols": ["R2AdapterOptions"],
       "signatures": [
         {
-          "label": "() => InfraServiceAdapter",
-          "parameters": [],
+          "label": "(options?: R2AdapterOptions) => InfraServiceAdapter",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "R2AdapterOptions",
+              "required": false,
+              "description": null
+            }
+          ],
           "returnType": "InfraServiceAdapter",
           "returnDescription": null
         }
@@ -142,25 +290,526 @@
       "signatures": [],
       "members": [],
       "structuredRows": []
+    },
+    {
+      "name": "R2AdapterOptions",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/r2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/r2.ts",
+        "line": 30,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["R2BucketControlPlane"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "cloud",
+          "kind": "property",
+          "type": "R2BucketControlPlane | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "R2BucketControlPlane",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/r2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/r2.ts",
+        "line": 13,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["R2BucketObservation", "R2CloudRequest"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "createBucketAsync",
+          "kind": "method",
+          "type": "(request: R2CloudRequest & { readonly bucket: string; }) => Promise<InfraResult<R2BucketObservation>>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "deleteBucketAsync",
+          "kind": "method",
+          "type": "(request: R2CloudRequest & { readonly bucket: string; }) => Promise<InfraResult<null>>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "listBucketsAsync",
+          "kind": "method",
+          "type": "(request: R2CloudRequest) => Promise<InfraResult<readonly R2BucketObservation[]>>",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "R2BucketObservation",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/r2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/r2.ts",
+        "line": 3,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "name",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "R2CloudRequest",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/r2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/r2.ts",
+        "line": 7,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "accountId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "apiToken",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "signal",
+          "kind": "property",
+          "type": "AbortSignal | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "R2Fetch",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/types/r2.ts",
+      "sourceLocation": {
+        "filePath": "src/types/r2.ts",
+        "line": 28,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
     }
   ],
   "components": [],
   "sourceFunctions": [
     {
-      "name": "createInfraAdapter",
-      "description": "Create the canonical Cloudflare R2 object-storage adapter entrypoint.\n\nThe foundation exposes the released Contracts boundary and fails lifecycle calls explicitly\nuntil the provider implementation phase supplies its external adapters.",
+      "name": "createCloudflareR2ControlPlane",
+      "description": "Create the concrete Cloudflare REST adapter for R2 bucket lifecycle operations.",
       "sourceLocation": {
-        "filePath": "src/features/object-storage/composition/createInfraAdapter.ts",
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
         "line": 13,
         "column": 1
       }
     },
     {
-      "name": "notImplementedAsync",
-      "description": "Reject lifecycle execution until this package's provider phase is implemented.",
+      "name": "listBucketsAsync",
+      "description": "List every bucket page returned by Cloudflare's cursor-based API.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "createBucketAsync",
+      "description": "Create one R2 bucket through the Cloudflare account API.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "deleteBucketAsync",
+      "description": "Delete one explicitly selected R2 bucket through the Cloudflare account API.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 72,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestCloudflareAsync",
+      "description": "Execute one authenticated request while translating failures into redacted Infra diagnostics.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 87,
+        "column": 1
+      }
+    },
+    {
+      "name": "bucketCollectionUrl",
+      "description": "Build the account-scoped R2 bucket collection URL.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 136,
+        "column": 1
+      }
+    },
+    {
+      "name": "readBuckets",
+      "description": "Parse a Cloudflare list response without trusting its external JSON shape.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "readBucket",
+      "description": "Parse one Cloudflare R2 bucket result.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 152,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCursor",
+      "description": "Read a non-empty pagination cursor when another bucket page exists.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 160,
+        "column": 1
+      }
+    },
+    {
+      "name": "invalidResponse",
+      "description": "Return a stable diagnostic for an unexpected Cloudflare response schema.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "line": 167,
+        "column": 1
+      }
+    },
+    {
+      "name": "destroyR2Async",
+      "description": "Delete only ledger-owned, explicitly confirmed R2 buckets and retain every other bucket.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/destroyR2Async.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "resourceKey",
+      "description": "Serialize the complete ownership identity used for destructive authorization.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/destroyR2Async.ts",
+        "line": 50,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCloudRequestAsync",
+      "description": "Resolve the R2 control-plane request without inspecting or adopting remote resources.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/destroyR2Async.ts",
+        "line": 55,
+        "column": 1
+      }
+    },
+    {
+      "name": "isConfirmed",
+      "description": "Verify exact project and environment confirmation before destructive work.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/destroyR2Async.ts",
+        "line": 76,
+        "column": 1
+      }
+    },
+    {
+      "name": "unconfirmed",
+      "description": "Reject an unconfirmed destructive request.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/destroyR2Async.ts",
+        "line": 86,
+        "column": 1
+      }
+    },
+    {
+      "name": "invalidSelection",
+      "description": "Reject destroy when R2 is not the selected object-storage provider.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/destroyR2Async.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingToken",
+      "description": "Reject destroy when the selected credential bundle lacks its API token.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/destroyR2Async.ts",
+        "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingExternalId",
+      "description": "Reject deletion when a ledger resource lacks its external bucket identity.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/destroyR2Async.ts",
+        "line": 128,
+        "column": 1
+      }
+    },
+    {
+      "name": "getR2StatusAsync",
+      "description": "Report provider-neutral readiness for every selected R2 bucket.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/getR2StatusAsync.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "planR2Async",
+      "description": "Plan R2 bucket creation and retained stale resources without mutation.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/planR2Async.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "reconcileR2Async",
+      "description": "Idempotently create missing R2 buckets and return public connection metadata.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/reconcileR2Async.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "bucketOutputs",
+      "description": "Describe non-secret R2 connection outputs for one bucket.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/reconcileR2Async.ts",
+        "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveR2DesiredStateAsync",
+      "description": "Resolve and validate selected R2 config, credentials, remote state and ownership.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveR2CloudRequestAsync",
+      "description": "Resolve the selected R2 control-plane credential into an execution-only request.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 53,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveBucketNames",
+      "description": "Normalize desired bucket names and reject the first invalid value.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 73,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBucketName",
+      "description": "Validate the canonical Cloudflare R2 bucket naming rules.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
+      "name": "createBucketResource",
+      "description": "Create stable ownership for one persistent R2 bucket.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 96,
+        "column": 1
+      }
+    },
+    {
+      "name": "wasPreviouslyOwned",
+      "description": "Check whether the previous ledger proves ownership of one R2 resource.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "bucketName",
+      "description": "Extract the external bucket name from a stable resource identifier.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 125,
+        "column": 1
+      }
+    },
+    {
+      "name": "unownedCollision",
+      "description": "Reject an existing bucket whose ownership is not proven by the previous ledger.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "invalidSelection",
+      "description": "Reject an adapter invocation when R2 is not the selected object-storage provider.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 145,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingAccountId",
+      "description": "Reject R2 lifecycle without an explicit Cloudflare account identifier.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 159,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingApiToken",
+      "description": "Reject a control-plane credential bundle that lacks the Cloudflare API token.",
+      "sourceLocation": {
+        "filePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "line": 173,
+        "column": 1
+      }
+    },
+    {
+      "name": "createInfraAdapter",
+      "description": "Create the canonical Cloudflare R2 object-storage adapter entrypoint.\n\nThe default adapter uses Cloudflare's account API. Callers may inject another control-plane\nadapter for deterministic tests or another trusted execution environment.",
       "sourceLocation": {
         "filePath": "src/features/object-storage/composition/createInfraAdapter.ts",
-        "line": 26,
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/infraAdapter.test.ts",
+        "line": 111,
+        "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/infraAdapter.test.ts",
+        "line": 138,
+        "column": 9
+      }
+    },
+    {
+      "name": "createContext",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/infraAdapter.test.ts",
+        "line": 210,
+        "column": 1
+      }
+    },
+    {
+      "name": "createBucketResource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/infraAdapter.test.ts",
+        "line": 244,
+        "column": 1
+      }
+    },
+    {
+      "name": "createLedger",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/infraAdapter.test.ts",
+        "line": 259,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDestroyRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/infraAdapter.test.ts",
+        "line": 269,
+        "column": 1
+      }
+    },
+    {
+      "name": "cloudflareResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/infraAdapter.test.ts",
+        "line": 281,
         "column": 1
       }
     }
@@ -168,10 +817,18 @@
   "sequenceScenarios": [
     {
       "kind": "export",
+      "name": "createCloudflareR2ControlPlane",
+      "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+      "symbolName": "createCloudflareR2ControlPlane",
+      "description": "Create the concrete Cloudflare REST adapter for R2 bucket lifecycle operations.",
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "createInfraAdapter",
       "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts",
       "symbolName": "createInfraAdapter",
-      "description": "Create the canonical Cloudflare R2 object-storage adapter entrypoint.\n\nThe foundation exposes the released Contracts boundary and fails lifecycle calls explicitly\nuntil the provider implementation phase supplies its external adapters.",
+      "description": "Create the canonical Cloudflare R2 object-storage adapter entrypoint.\n\nThe default adapter uses Cloudflare's account API. Callers may inject another control-plane\nadapter for deterministic tests or another trusted execution environment.",
       "isReadme": true
     }
   ],
@@ -184,7 +841,17 @@
       },
       {
         "fromPath": "src/index.ts",
+        "toPath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
         "toPath": "src/features/object-storage/composition/createInfraAdapter.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/types/r2.ts",
         "sourcePath": "src/index.ts"
       },
       {
@@ -193,23 +860,97 @@
         "sourcePath": "src/infraAdapter.test.ts"
       },
       {
+        "fromPath": "src/infraAdapter.test.ts",
+        "toPath": "src/types/r2.ts",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
         "fromPath": "examples/basic-usage/index.ts",
         "toPath": "dist/index.d.ts",
         "sourcePath": "examples/basic-usage/index.ts"
       },
       {
+        "fromPath": "src/features/object-storage/application/destroyR2Async.ts",
+        "toPath": "src/types/r2.ts",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/application/getR2StatusAsync.ts",
+        "toPath": "src/types/r2.ts",
+        "sourcePath": "src/features/object-storage/application/getR2StatusAsync.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/application/getR2StatusAsync.ts",
+        "toPath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "sourcePath": "src/features/object-storage/application/getR2StatusAsync.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/application/planR2Async.ts",
+        "toPath": "src/types/r2.ts",
+        "sourcePath": "src/features/object-storage/application/planR2Async.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/application/planR2Async.ts",
+        "toPath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "sourcePath": "src/features/object-storage/application/planR2Async.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/application/reconcileR2Async.ts",
+        "toPath": "src/types/r2.ts",
+        "sourcePath": "src/features/object-storage/application/reconcileR2Async.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/application/reconcileR2Async.ts",
+        "toPath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "sourcePath": "src/features/object-storage/application/reconcileR2Async.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "toPath": "src/types/r2.ts",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
         "fromPath": "src/features/object-storage/composition/createInfraAdapter.ts",
         "toPath": "src/constants/infra.ts",
         "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/composition/createInfraAdapter.ts",
+        "toPath": "src/types/r2.ts",
+        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/composition/createInfraAdapter.ts",
+        "toPath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/composition/createInfraAdapter.ts",
+        "toPath": "src/features/object-storage/application/destroyR2Async.ts",
+        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/composition/createInfraAdapter.ts",
+        "toPath": "src/features/object-storage/application/getR2StatusAsync.ts",
+        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/composition/createInfraAdapter.ts",
+        "toPath": "src/features/object-storage/application/planR2Async.ts",
+        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/composition/createInfraAdapter.ts",
+        "toPath": "src/features/object-storage/application/reconcileR2Async.ts",
+        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts",
+        "toPath": "src/types/r2.ts",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
       }
     ],
     "calls": [
-      {
-        "fromSymbol": "src/infraAdapter.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/infraAdapter.test.ts"
-      },
       {
         "fromSymbol": "src/infraAdapter.test.ts",
         "toSymbol": "it",
@@ -235,53 +976,416 @@
         "sourcePath": "src/infraAdapter.test.ts"
       },
       {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "createContext",
+        "callExpression": "createContext",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "createLedger",
+        "callExpression": "createLedger",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "createBucketResource",
+        "callExpression": "createBucketResource",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "createDestroyRequest",
+        "callExpression": "createDestroyRequest",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "request",
+        "toSymbol": "cloudflareResponse",
+        "callExpression": "cloudflareResponse",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "createCloudflareR2ControlPlane",
+        "callExpression": "createCloudflareR2ControlPlane",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "listBucketsAsync",
+        "callExpression": "cloud.listBucketsAsync",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "createBucketAsync",
+        "callExpression": "cloud.createBucketAsync",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/infraAdapter.test.ts",
+        "toSymbol": "deleteBucketAsync",
+        "callExpression": "cloud.deleteBucketAsync",
+        "sourcePath": "src/infraAdapter.test.ts"
+      },
+      {
         "fromSymbol": "examples/basic-usage/index.ts",
         "toSymbol": "createInfraAdapter",
         "callExpression": "createInfraAdapter",
         "sourcePath": "examples/basic-usage/index.ts"
       },
       {
+        "fromSymbol": "destroyR2Async",
+        "toSymbol": "isConfirmed",
+        "callExpression": "isConfirmed",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromSymbol": "destroyR2Async",
+        "toSymbol": "unconfirmed",
+        "callExpression": "unconfirmed",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromSymbol": "destroyR2Async",
+        "toSymbol": "resolveCloudRequestAsync",
+        "callExpression": "resolveCloudRequestAsync",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromSymbol": "src/features/object-storage/application/destroyR2Async.ts",
+        "toSymbol": "resourceKey",
+        "callExpression": "resourceKey",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromSymbol": "destroyR2Async",
+        "toSymbol": "missingExternalId",
+        "callExpression": "missingExternalId",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromSymbol": "destroyR2Async",
+        "toSymbol": "deleteBucketAsync",
+        "callExpression": "cloud.deleteBucketAsync",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromSymbol": "resolveCloudRequestAsync",
+        "toSymbol": "invalidSelection",
+        "callExpression": "invalidSelection",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromSymbol": "resolveCloudRequestAsync",
+        "toSymbol": "missingToken",
+        "callExpression": "missingToken",
+        "sourcePath": "src/features/object-storage/application/destroyR2Async.ts"
+      },
+      {
+        "fromSymbol": "getR2StatusAsync",
+        "toSymbol": "resolveR2DesiredStateAsync",
+        "callExpression": "resolveR2DesiredStateAsync",
+        "sourcePath": "src/features/object-storage/application/getR2StatusAsync.ts"
+      },
+      {
+        "fromSymbol": "planR2Async",
+        "toSymbol": "resolveR2DesiredStateAsync",
+        "callExpression": "resolveR2DesiredStateAsync",
+        "sourcePath": "src/features/object-storage/application/planR2Async.ts"
+      },
+      {
+        "fromSymbol": "reconcileR2Async",
+        "toSymbol": "resolveR2DesiredStateAsync",
+        "callExpression": "resolveR2DesiredStateAsync",
+        "sourcePath": "src/features/object-storage/application/reconcileR2Async.ts"
+      },
+      {
+        "fromSymbol": "reconcileR2Async",
+        "toSymbol": "createBucketAsync",
+        "callExpression": "cloud.createBucketAsync",
+        "sourcePath": "src/features/object-storage/application/reconcileR2Async.ts"
+      },
+      {
+        "fromSymbol": "src/features/object-storage/application/reconcileR2Async.ts",
+        "toSymbol": "bucketOutputs",
+        "callExpression": "bucketOutputs",
+        "sourcePath": "src/features/object-storage/application/reconcileR2Async.ts"
+      },
+      {
+        "fromSymbol": "resolveR2DesiredStateAsync",
+        "toSymbol": "invalidSelection",
+        "callExpression": "invalidSelection",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveR2DesiredStateAsync",
+        "toSymbol": "resolveBucketNames",
+        "callExpression": "resolveBucketNames",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveR2DesiredStateAsync",
+        "toSymbol": "resolveR2CloudRequestAsync",
+        "callExpression": "resolveR2CloudRequestAsync",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveR2DesiredStateAsync",
+        "toSymbol": "listBucketsAsync",
+        "callExpression": "cloud.listBucketsAsync",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "toSymbol": "createBucketResource",
+        "callExpression": "createBucketResource",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "toSymbol": "bucketName",
+        "callExpression": "bucketName",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "toSymbol": "wasPreviouslyOwned",
+        "callExpression": "wasPreviouslyOwned",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveR2DesiredStateAsync",
+        "toSymbol": "unownedCollision",
+        "callExpression": "unownedCollision",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveR2CloudRequestAsync",
+        "toSymbol": "missingApiToken",
+        "callExpression": "missingApiToken",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveR2CloudRequestAsync",
+        "toSymbol": "missingAccountId",
+        "callExpression": "missingAccountId",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts",
+        "toSymbol": "isBucketName",
+        "callExpression": "isBucketName",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "unownedCollision",
+        "toSymbol": "bucketName",
+        "callExpression": "bucketName",
+        "sourcePath": "src/features/object-storage/application/resolveR2DesiredStateAsync.ts"
+      },
+      {
+        "fromSymbol": "createInfraAdapter",
+        "toSymbol": "createCloudflareR2ControlPlane",
+        "callExpression": "createCloudflareR2ControlPlane",
+        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
         "fromSymbol": "validateAsync",
-        "toSymbol": "notImplementedAsync",
-        "callExpression": "notImplementedAsync",
+        "toSymbol": "planR2Async",
+        "callExpression": "planR2Async",
         "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
       },
       {
         "fromSymbol": "planAsync",
-        "toSymbol": "notImplementedAsync",
-        "callExpression": "notImplementedAsync",
-        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
-      },
-      {
-        "fromSymbol": "desiredWorkloadsAsync",
-        "toSymbol": "notImplementedAsync",
-        "callExpression": "notImplementedAsync",
+        "toSymbol": "planR2Async",
+        "callExpression": "planR2Async",
         "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
       },
       {
         "fromSymbol": "reconcileAsync",
-        "toSymbol": "notImplementedAsync",
-        "callExpression": "notImplementedAsync",
+        "toSymbol": "reconcileR2Async",
+        "callExpression": "reconcileR2Async",
         "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
       },
       {
         "fromSymbol": "statusAsync",
-        "toSymbol": "notImplementedAsync",
-        "callExpression": "notImplementedAsync",
+        "toSymbol": "getR2StatusAsync",
+        "callExpression": "getR2StatusAsync",
         "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
       },
       {
         "fromSymbol": "destroyAsync",
-        "toSymbol": "notImplementedAsync",
-        "callExpression": "notImplementedAsync",
+        "toSymbol": "destroyR2Async",
+        "callExpression": "destroyR2Async",
         "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "listBucketsAsync",
+        "toSymbol": "listBucketsAsync",
+        "callExpression": "listBucketsAsync",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "createBucketAsync",
+        "toSymbol": "createBucketAsync",
+        "callExpression": "createBucketAsync",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "deleteBucketAsync",
+        "toSymbol": "deleteBucketAsync",
+        "callExpression": "deleteBucketAsync",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "listBucketsAsync",
+        "toSymbol": "requestCloudflareAsync",
+        "callExpression": "requestCloudflareAsync",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "listBucketsAsync",
+        "toSymbol": "bucketCollectionUrl",
+        "callExpression": "bucketCollectionUrl",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "listBucketsAsync",
+        "toSymbol": "readBuckets",
+        "callExpression": "readBuckets",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "listBucketsAsync",
+        "toSymbol": "readCursor",
+        "callExpression": "readCursor",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "createBucketAsync",
+        "toSymbol": "requestCloudflareAsync",
+        "callExpression": "requestCloudflareAsync",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "createBucketAsync",
+        "toSymbol": "bucketCollectionUrl",
+        "callExpression": "bucketCollectionUrl",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "createBucketAsync",
+        "toSymbol": "readBucket",
+        "callExpression": "readBucket",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "createBucketAsync",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "deleteBucketAsync",
+        "toSymbol": "requestCloudflareAsync",
+        "callExpression": "requestCloudflareAsync",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "deleteBucketAsync",
+        "toSymbol": "bucketCollectionUrl",
+        "callExpression": "bucketCollectionUrl",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "requestCloudflareAsync",
+        "toSymbol": "request",
+        "callExpression": "request",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "requestCloudflareAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "readBuckets",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "readBuckets",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "readBucket",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "readCursor",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
       }
     ],
     "typeReferences": [
       {
+        "fromSymbol": "createCloudflareR2ControlPlane",
+        "toType": "CloudflareR2ControlPlaneOptions",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
+        "fromSymbol": "createCloudflareR2ControlPlane",
+        "toType": "R2BucketControlPlane",
+        "sourcePath": "src/features/object-storage/adapters/outbound/createCloudflareR2ControlPlane.ts"
+      },
+      {
         "fromSymbol": "createInfraAdapter",
         "toType": "InfraServiceAdapter",
         "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "createInfraAdapter",
+        "toType": "R2AdapterOptions",
+        "sourcePath": "src/features/object-storage/composition/createInfraAdapter.ts"
+      },
+      {
+        "fromSymbol": "CloudflareR2ControlPlaneOptions",
+        "toType": "R2Fetch",
+        "sourcePath": "src/types/r2.ts"
+      },
+      {
+        "fromSymbol": "R2AdapterOptions",
+        "toType": "R2BucketControlPlane",
+        "sourcePath": "src/types/r2.ts"
+      },
+      {
+        "fromSymbol": "R2BucketControlPlane",
+        "toType": "InfraResult",
+        "sourcePath": "src/types/r2.ts"
+      },
+      {
+        "fromSymbol": "R2BucketControlPlane",
+        "toType": "R2BucketObservation",
+        "sourcePath": "src/types/r2.ts"
+      },
+      {
+        "fromSymbol": "R2BucketControlPlane",
+        "toType": "R2CloudRequest",
+        "sourcePath": "src/types/r2.ts"
+      },
+      {
+        "fromSymbol": "R2CloudRequest",
+        "toType": "AbortSignal",
+        "sourcePath": "src/types/r2.ts"
       }
     ],
     "componentComposition": []
